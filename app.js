@@ -8,15 +8,20 @@ jimp.read("pic.jpg", (err, photo) => {
     if (err) throw err;
 
     photo
+    
+        .convolute([
+            [-2, -1, 0],
+            [-1, 1, 1],
+            [0, 1, 2]
+        ]) //Sum neighbor pixels weighted by the kernel matrix. 
+        .write("modified image 0.jpg")
+
         .resize(256, 256) //to resize the image into 256 * 256 px
         .quality(60) // set JPEG quality
         .write("modified image 1.jpg")
 
         .brightness(0.5) // adjust the brightness by a value -1 to +1
         .write("modified image 2.jpg")
-
-        // .invert()
-        // .write("modified image 3.jpg")
 
         .normalize() // normalize the channels in an image divide each pixel by 255
         .write("modified image 3.jpg")
@@ -30,12 +35,12 @@ jimp.read("pic.jpg", (err, photo) => {
         // .gaussian(10)
         // .blur(10) // fast blur the image by r pixels.
         .color([{
-            apply: 'xor',
+            apply: 'xor', //Treats the two colors as bit fields and applies an XOR operation to the red, green, and blue components
             params: ['#06D']
         }])
-        .write("modified image 6.jpg")
-        .posterize(50) // apply a posterization effect with n level as the n increases its effect decreases.
 
+        .posterize(50) // apply a posterization effect with n level as the n increases its effect decreases.
+        .write("modified image 6.jpg")
 
 
 
